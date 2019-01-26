@@ -1,5 +1,7 @@
 package com.codecool;
 
+import java.util.List;
+
 /**
  * The Store class is abstract. The store method accepts a Product instance as its parameter, which product is created
  * via the createProduct method. createProduct is implemented in the Store class and the concrete product creation
@@ -11,4 +13,25 @@ package com.codecool;
  */
 
 public abstract class Store {
+
+    private void saveToXml(Product product) {
+
+    }
+
+    protected void storeProduct(Product product) {
+
+    }
+
+    protected Product createProduct(String type, String name, int price, int size) {
+        return product;
+    }
+
+    public List<Product> loadProducts() {
+        return productsList;
+    }
+
+    public void store(Product product) {
+
+    }
+
 }

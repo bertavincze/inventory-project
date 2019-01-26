@@ -1,4 +1,6 @@
 package com.codecool;
 
-public class BookProduct {
+public class BookProduct extends Product {
+
+    private int numOfPages;
 }
