@@ -1,13 +1,13 @@
 package com.codecool;
 
+/**
+ * The Main class is responsible for starting the application.
+ * It creates a StoreManager instance to be able to store products.
+ */
+
 public class Main {
 
-    public String getWelcomeString() {
-        return "Hi!";
-    }
-
     public static void main(String[] args) {
-        Main main = new Main();
-        System.out.println(main.getWelcomeString());
+
     }
 }
