@@ -9,5 +9,15 @@ public class Main {
 
     public static void main(String[] args) {
 
+        StoreManager storeManager = new StoreManager();
+
+        Store.createProd("Harry Potter and the Philosopher's Stone", 1000, 332);
+
+        S
+
+        storeManager.
+
+
+
     }
 }

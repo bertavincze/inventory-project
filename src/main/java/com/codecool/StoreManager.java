@@ -1,5 +1,7 @@
 package com.codecool;
 
+import java.util.List;
+
 /**
  * The StoreManager to work correctly need to be provided with a StorageCapable instance via the addStorage method.
  * After this is done we can use it to add and store products. E.g. calling the addCDProduct method with the correct
@@ -14,14 +16,13 @@ public class StoreManager {
     }
 
     public void addCDProduct(String name, int price, int tracks) {
-
     }
 
     public void addBookProduct(String name, int price, int pages) {
-
     }
 
     public String listProducts() {
+
         return products;
     }
 
