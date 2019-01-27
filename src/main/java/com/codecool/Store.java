@@ -26,7 +26,7 @@ import java.util.List;
  * The saveToXml method is implemented in the Store abstract class. Calling it saves the incoming product to XML.
  */
 
-public abstract class Store {
+public abstract class Store implements StorageCapable {
 
     private void saveToXml(Product product) {
         try {
@@ -77,7 +77,6 @@ public abstract class Store {
     }
 
     protected void storeProduct(Product product) {
-
     }
 
     protected Product createProduct(String type, String name, int price, int size) {

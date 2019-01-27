@@ -9,10 +9,26 @@ import java.util.List;
 
 public class PersistentStore extends Store {
 
+    private List<Product> products;
+
     @Override
     public void storeProduct(Product product) {
-        List<Product> products = super.loadProducts();
+        this.products = super.loadProducts();
         products.add(product);
     }
 
+    @Override
+    public List<Product> getAllProducts() {
+        return this.products;
+    }
+
+    @Override
+    public void storeCDProduct(String name, int price, int tracks) {
+
+    }
+
+    @Override
+    public void storeBookProduct(String name, int price, int pages) {
+
+    }
 }

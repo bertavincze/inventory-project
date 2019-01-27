@@ -1,5 +1,8 @@
 package com.codecool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The Main class is responsible for starting the application.
  * It creates a StoreManager instance to be able to store products.
@@ -8,15 +11,11 @@ package com.codecool;
 public class Main {
 
     public static void main(String[] args) {
-
         StoreManager storeManager = new StoreManager();
-
-        Store.createProd("Harry Potter and the Philosopher's Stone", 1000, 332);
-
-        S
-
-        storeManager.
-
+        PersistentStore store = new PersistentStore();
+        storeManager.addStorage(store);
+        Product book1 = store.createProduct("Book", "Kutya", 100, 100);
+        store.store(book1);
 
 
     }
