@@ -11,24 +11,22 @@ public class PersistentStore extends Store {
 
     private List<Product> products;
 
+    public PersistentStore() {
+        this.products = super.loadProducts("products.xml");
+    }
+
     @Override
     public void storeProduct(Product product) {
-        this.products = super.loadProducts();
-        products.add(product);
+        if (product instanceof BookProduct) {
+            storeBookProduct(product.getName(), product.getPrice(), ((BookProduct) product).getNumOfPages());
+        } else if (product instanceof CDProduct) {
+            storeCDProduct(product.getName(), product.getPrice(), ((CDProduct) product).getNumOfTracks());
+        }
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return this.products;
+        return products;
     }
 
-    @Override
-    public void storeCDProduct(String name, int price, int tracks) {
-
-    }
-
-    @Override
-    public void storeBookProduct(String name, int price, int pages) {
-
-    }
 }

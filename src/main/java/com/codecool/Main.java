@@ -1,7 +1,5 @@
 package com.codecool;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Main class is responsible for starting the application.
@@ -13,10 +11,11 @@ public class Main {
     public static void main(String[] args) {
         StoreManager storeManager = new StoreManager();
         PersistentStore store = new PersistentStore();
+        //CsvStore store = new CsvStore();
         storeManager.addStorage(store);
-        Product book1 = store.createProduct("Book", "Kutya", 100, 100);
-        store.store(book1);
-
+        System.out.println(store.getAllProducts());
+        store.store(new BookProduct("Example Book Part 2", 200, 250));
+        System.out.println(store.getAllProducts());
 
     }
 }

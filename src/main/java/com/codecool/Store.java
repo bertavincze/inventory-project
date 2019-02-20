@@ -1,8 +1,10 @@
 package com.codecool;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,6 +15,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +33,8 @@ import java.util.List;
 
 public abstract class Store implements StorageCapable {
 
+    protected List<Product> products = new ArrayList<>();
+
     private void saveToXml(Product product) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -41,58 +48,78 @@ public abstract class Store implements StorageCapable {
 
             root.appendChild(productDetails);
 
-            Attr name = document.createAttribute("name");
-            name.setValue(product.getName());
-            productDetails.setAttributeNode(name);
-            // productDetails.setAttribute("name", product.getName());
+            document.createAttribute("name");
+            productDetails.setAttribute("name", product.getName());
 
-            Attr price = document.createAttribute("price");
-            price.setValue(String.valueOf(product.getPrice()));
-            productDetails.setAttributeNode(price);
-            // productDetails.setAttribute("price", product.getPrice());
+            document.createAttribute("price");
+            productDetails.setAttribute("price", String.valueOf(product.getPrice()));
 
-            Attr size = document.createAttribute("size");
-            size.setValue(String.valueOf(product.getSize()));
-            productDetails.setAttributeNode(size);
-            // productDetails.setAttribute("size", product.getSize());
+            document.createAttribute("size");
+            productDetails.setAttribute("size", (String.valueOf(product.getSize())));
 
-
-            Attr type = document.createAttribute("type");
-            type.setValue(product.getType());
-            productDetails.setAttributeNode(type);
-            // productDetails.setAttribute("type", product.getType());
+            document.createAttribute("type");
+            productDetails.setAttribute("type", product.getType());
 
             TransformerFactory trf = TransformerFactory.newInstance();
             Transformer transformer = trf.newTransformer();
             DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult(new File("export.xml"));
+            StreamResult result = new StreamResult(new File("products.xml"));
 
             transformer.transform(source, result);
 
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
+        } catch (ParserConfigurationException | TransformerException e) {
+            e.printStackTrace();
         }
     }
 
+    @Override
+    public void storeCDProduct(String name, int price, int tracks) {
+        products.add(new CDProduct(name, price, tracks));
+    }
+
+    @Override
+    public void storeBookProduct(String name, int price, int pages) {
+        products.add(new BookProduct(name, price, pages));
+    }
+
     protected void storeProduct(Product product) {
+        if (product instanceof BookProduct) {
+            storeBookProduct(product.getName(), product.getPrice(), ((BookProduct) product).getNumOfPages());
+        } else if (product instanceof CDProduct) {
+            storeCDProduct(product.getName(), product.getPrice(), ((CDProduct) product).getNumOfTracks());
+        }
     }
 
     protected Product createProduct(String type, String name, int price, int size) {
         switch (type) {
             case "CD":
-                Product cdProduct = new CDProduct(name, price, size);
-                return cdProduct;
+                return new CDProduct(name, price, size);
             case "Book":
-                Product bookProduct = new BookProduct(name, price, size);
-                return bookProduct;
+                return new BookProduct(name, price, size);
         }
         return null;
     }
 
-    public List<Product> loadProducts() {
-        List<Product> products = new ArrayList<>();
+    public List<Product> loadProducts(String xmlPath) {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        Document document = null;
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            InputStream is = new FileInputStream(xmlPath);
+            document = db.parse(is);
+            document.getDocumentElement().normalize();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        NodeList nodeList = document.getElementsByTagName("Product");
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node tempNode = nodeList.item(i);
+            Element tempElement = (Element) tempNode;
+            String type = tempElement.getAttribute("type");
+            products.add(createProduct(type, tempElement.getAttribute("name"),
+                        Integer.parseInt(tempElement.getAttribute("price")),
+                        Integer.parseInt(tempElement.getAttribute("size"))));
+        }
         return products;
     }
 
