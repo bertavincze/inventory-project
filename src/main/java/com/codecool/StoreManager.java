@@ -25,12 +25,15 @@ public class StoreManager {
         storage.storeBookProduct(name, price, pages);
     }
 
-    public String listProducts() {
-
-        return null;
+    public List<Product> listProducts() {
+        return storage.getAllProducts();
     }
 
     public int getTotalProductPrice() {
-        return 0;
+        int totalPrice = 0;
+        for (Product product:storage.getAllProducts()) {
+            totalPrice += product.getPrice();
+        }
+        return totalPrice;
     }
 }

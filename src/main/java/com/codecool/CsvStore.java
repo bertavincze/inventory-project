@@ -15,12 +15,12 @@ public class CsvStore implements StorageCapable {
         products = new ArrayList<>();
         FileHandler fh = new FileHandler();
         String[][] data = fh.read(filename);
-        for (int i = 0; i < data.length; i++) {
-            String type = data[i][3];
+        for (String[] strings : data) {
+            String type = strings[3];
             if (type.equals("Book")) {
-                storeBookProduct(data[i][0], Integer.parseInt(data[i][1]), Integer.parseInt(data[i][2]));
+                storeBookProduct(strings[0], Integer.parseInt(strings[1]), Integer.parseInt(strings[2]));
             } else if (type.equals("CD")) {
-                storeCDProduct(data[i][0], Integer.parseInt(data[i][1]), Integer.parseInt(data[i][2]));
+                storeCDProduct(strings[0], Integer.parseInt(strings[1]), Integer.parseInt(strings[2]));
             }
         }
         return products;
@@ -54,6 +54,6 @@ public class CsvStore implements StorageCapable {
     private void saveToCsv(Product product) {
         FileHandler fh = new FileHandler();
         String productData = product.getName() + "," + product.getPrice() + "," + product.getSize() + "," + product.getType();
-        fh.append("products.csv", productData);
+        fh.write("products.csv", productData);
     }
 }
